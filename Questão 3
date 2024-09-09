@@ -1,0 +1,45 @@
+#include <stdio.h>
+
+int binarySearch(int accounts[], int size, int target, int *comparisons) {
+    int left = 0;
+    int right = size - 1;
+    *comparisons = 0; 
+
+    while (left <= right) {
+        (*comparisons)++;
+        int mid = left + (right - left) / 2;
+
+        if (accounts[mid] == target) {
+            return mid; // Conta encontrada, retorna a posição
+        }
+        if (accounts[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1; 
+        }
+    }
+
+    return -1; 
+}
+
+int main() {
+    int accounts[NUM_ACCOUNTS];
+    int target, position, comparisons;
+
+for (int i = 0; i < NUM_ACCOUNTS; i++) {
+        accounts[i] = i + 1; // Contas de 1 a 100
+    }
+    printf("Digite o número da conta a ser pesquisada: ");
+    scanf("%d", &target);
+
+position = binarySearch(accounts, NUM_ACCOUNTS, target, &comparisons);
+
+    if (position != -1) {
+        printf("Conta %d encontrada na posição %d.\n", target, position);
+    } else {
+        printf("Conta %d não encontrada.\n", target);
+    }
+    printf("Número de comparações realizadas: %d\n", comparisons);
+
+    return 0;
+}
