@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_LENGTH 10
+
+void displayWord(char word[], int guessed[]);
+int isWordGuessed(int guessed[], int length);
+void updateGuessedLetters(char word[], char guess, int guessed[], int *lives);
+
+int main() {
+    char word[MAX_LENGTH + 1];
+    int guessed[MAX_LENGTH];
+    int lives;
+    char guess;
+    int i, length;
+
+    for (i = 0; i < MAX_LENGTH; i++) {
+        guessed[i] = 0; // 0 significa que a letra ainda não foi adivinhada
+    }
+
+    printf("Digite a palavra secreta (maximo 10 letras): ");
+    scanf("%10s", word);
+    
+    length = strlen(word);
+
+    lives = length + 2;
+
+    while (lives > 0 && !isWordGuessed(guessed, length)) {
+        displayWord(word, guessed);
+        
+        printf("Digite uma letra: ");
+        scanf(" %c", &guess);
+        
+        updateGuessedLetters(word, guess, guessed, &lives);
+        
+        printf("Vidas restantes: %d\n", lives);
+    }
+
+    if (isWordGuessed(guessed, length)) {
+        printf("Parabéns! Você adivinhou a palavra: %s\n", word);
+    } else {
+        printf("Você perdeu! A palavra era: %s\n", word);
+    }
+
+    return 0;
+}
+
+void displayWord(char word[], int guessed[]) {
+    int i;
+    printf("Palavra: ");
+    for (i = 0; i < strlen(word); i++) {
+        if (guessed[i]) {
+            printf("%c ", word[i]);
+        } else {
+            printf("_ ");
+        }
+    }
+    printf("\n");
+}
+
+int isWordGuessed(int guessed[], int length) {
+    int i;
+    for (i = 0; i < length; i++) {
+        if (!guessed[i]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void updateGuessedLetters(char word[], char guess, int guessed[], int *lives) {
+    int i, found = 0;
+    for (i = 0; i < strlen(word); i++) {
+        if (word[i] == guess) {
+            guessed[i] = 1;
+            found = 1;
+        }
+    }
+    if (!found) {
+        (*lives)--;
+        printf("Letra não encontrada.\n");
+    } else {
+        printf("Letra correta!\n");
+    }
+}
