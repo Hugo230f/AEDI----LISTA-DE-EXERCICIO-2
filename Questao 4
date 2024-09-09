@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX 100
+#define PRIME_COUNT 25 
+
+    if (num <= 1) return false;
+    if (num <= 3) return true;
+    if (num % 2 == 0 || num % 3 == 0) return false;
+    for (int i = 5; i * i <= num; i += 6) {
+        if (num % i == 0 || num % (i + 2) == 0) return false;
+    }
+    return true;
+}
+void generatePrimes(int primes[], int *count) {
+    *count = 0;
+    for (int i = 2; i <= MAX; i++) {
+        if (isPrime(i)) {
+            primes[(*count)++] = i;
+        }
+    }
+}
+
+int binarySearch(int arr[], int size, int target) {
+    int left = 0;
+    int right = size - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == target) {
+            return mid; // Retorna a posição se encontrado
+        }
+        if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return -1; 
+
+int main() {
+    int primes[PRIME_COUNT];
+    int count;
+    int target;
+
+generatePrimes(primes, &count);
+
+printf("Digite um número entre 1 e 100: ");
+    scanf("%d", &target);
+
+if (target < 1 || target > 100) {
+        printf("Número fora do intervalo permitido (1 a 100).\n");
+        return 1;
+    }
+    int position = binarySearch(primes, count, target);
+
+if (position != -1) {
+        printf("Número %d está na lista de números primos.\n", target);
+    } else {
+        printf("Número %d não está na lista de números primos.\n", target);
+    }
+
+    return 0;
+}
